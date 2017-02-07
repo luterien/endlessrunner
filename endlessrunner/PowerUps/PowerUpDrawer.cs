@@ -37,10 +37,20 @@ public class PowerUpDrawer : MonoBehaviour {
         // add it to the list
         if (powerUps.Contains(powerUp)) {
             powerUps.Find(power => power == powerUp).ResetDuration();
+            Toast.get.Show("Boost timer reset!");
         } else {
+            // check for other powerups with similar effect
+            for (int i=0; i < powerUps.Count; i++) {
+                if (powerUps[i].targetStat == powerUp.targetStat) {
+                    Toast.get.Show("Already using this boost!");
+                    return;
+                }
+            }
+            // we can add it now
             powerUps.Add(powerUp);
             playerStats.ApplyPowerUp(powerUp);
             Visualize(powerUp);
+            Toast.get.Show(powerUp.powerUpName);
         }
 
     }

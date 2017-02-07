@@ -16,6 +16,8 @@ public class LootManager : MonoBehaviour {
     public float defaultX = 0f;
     public float defaultY = 0f;
 
+    public float startingZ = 0f;
+
     public float powerUpSpawnChance = 0.05f;
 
     float currentZ;
@@ -25,7 +27,7 @@ public class LootManager : MonoBehaviour {
 
     public Vector3 spawnPosition;
 
-    List<float> lanes = new List<float>() { -5f, 0f, 5f };
+    List<float> lanes = new List<float>() { -2f, 0f, 2f };
     
     void Awake() {
 
@@ -53,24 +55,32 @@ public class LootManager : MonoBehaviour {
         // set spawn Z and reset points X and Y
         spawnPosition = new Vector3(defaultX, defaultY, zPoint + spawnStartDistance);
         // try to spawn blocks until we are out of bounds
-        while (spawnPosition.z < zPoint + platformSize) {
-            SpawnLootBlock(lootBox);
+        while (spawnPosition.z - startingZ < zPoint + platformSize - spawnEndDistance) {
+            LootBlock lootBlock = GetLootBlock();
+            if (lootBlock == null) return;
+            SpawnLootBlock(lootBlock, lootBox);
         }
     }
 
-    private void SpawnLootBlock(Transform parent) {
-        LootBlock lootBlock = GetLootBlock();
+    private void SpawnLootBlock(LootBlock lootBlock, Transform parent) {
+        // set position
         spawnPosition.x = PickLane();
+        spawnPosition.z += distanceBetweenLootBlocks;
+        spawnPosition.y = defaultY;
+        // spawn all objects
         foreach (LootSpawnData spawnObject in lootBlock.spawnData) {
             SpawnLoot(spawnObject, parent);
         }
-        spawnPosition.z += distanceBetweenLootBlocks;
-        spawnPosition.y = defaultY;
     }
 
     private LootBlock GetLootBlock() {
         // return a random block for now
-        return lootBlocks[Random.Range(0, lootBlocks.Count)];
+        try {
+            return lootBlocks[Random.Range(0, lootBlocks.Count)];
+        } catch (System.ArgumentOutOfRangeException) {
+            Debug.LogError("LootBlock could not be found.");
+        }
+        return null;
     }
 
     private void SpawnLoot(LootSpawnData spawnData, Transform parent) {
@@ -79,35 +89,14 @@ public class LootManager : MonoBehaviour {
         // spawn object
         GameObject loot = (GameObject) Instantiate(
             spawnData.loot,
-            spawnPosition, 
+            new Vector3(spawnPosition.x, spawnData.loot.transform.position.y, spawnPosition.z), 
             spawnData.loot.transform.rotation
         );
         loot.transform.SetParent(parent);
-        // check for power up spawn
-        TryAndSpawnPowerUp();
     }
 
     private float PickLane() {
         return lanes[Random.Range(0, lanes.Count)];
-    }
-
-    // spawn a power up object alongside the loot block
-    private void TryAndSpawnPowerUp() {
-        if (Random.value < powerUpSpawnChance) {
-            float x;
-            if (spawnPosition.x == 0) {
-                x = (Random.value > 0.5f ? -5 : 5);
-            } else {
-                x = (Random.value > 0.5f ? 0 : spawnPosition.x*-1);
-            }
-            PowerUpManager.get.SpawnRandomPowerUp(
-                new Vector3(
-                        x,
-                        spawnPosition.y,
-                        spawnPosition.z
-                    )
-            );
-        }
     }
 
 }

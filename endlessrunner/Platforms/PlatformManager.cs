@@ -12,6 +12,8 @@ public class PlatformManager : MonoBehaviour {
     public float platformSize = 267f;
     GameObject nextPlatformObject;
 
+    public Transform platformPool;
+
     Vector3 lastPlatformPosition;
 
     void Awake() {
@@ -23,9 +25,22 @@ public class PlatformManager : MonoBehaviour {
     }
     
     void Start () {
-        for (int i=0; i < platforms.Count; i++) { 
-            GameObject platformObject = (GameObject) Instantiate(platforms[i], new Vector3(0f, 0f, platformSize * i), Quaternion.identity);
+        // start with 2 platforms
+        for (int i=0; i < 3; i++) { 
+            GameObject platformObject = (GameObject) Instantiate(
+                platforms[i], 
+                new Vector3(platforms[i].transform.position.x, platforms[i].transform.position.y, platformSize * i), 
+                Quaternion.identity
+            );
             lastPlatformPosition = platformObject.transform.position;
+        }
+        // spawn other platforms at pool position & add them to pool list
+        for (int i = 2; i < platforms.Count; i++) {
+            GameObject platformObject = (GameObject)Instantiate(
+                platforms[i],
+                platformPool.position,
+                Quaternion.identity
+            );
         }
     }
 	
@@ -55,10 +70,14 @@ public class PlatformManager : MonoBehaviour {
             }
 
             // add oldplatform to pool
-            pool.Add(oldPlatformObject);
-
+            AddToPool(oldPlatformObject);
         }
 
+    }
+
+    void AddToPool(GameObject oldPlatformObject) {
+        oldPlatformObject.transform.position = platformPool.position;
+        pool.Add(oldPlatformObject);
     }
 
     GameObject GetNextPlatform() {

@@ -16,7 +16,7 @@ public class DestroyPlatform : MonoBehaviour {
 
     void OnTriggerExit(Collider collider) {
         if (collider.gameObject.tag == "Player") {
-            PlatformManager.get.DestroyPlatform(transform.parent.parent.gameObject);
+            PlatformManager.get.DestroyPlatform(transform.parent.gameObject);
         }
     }
 
