@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour {
+public class KasideGameManager : MonoBehaviour {
 
-    public static GameManager Instance;
+    public static KasideGameManager Instance;
 
     AudioSource audioSource;
 

@@ -10,4 +10,6 @@ public class LootSpawnData {
     // position of loot compared to the loot before this one
     public Vector3 position;
 
+    public float rotationDifference = 0f;
+
 }

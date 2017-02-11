@@ -42,7 +42,7 @@ public class CurvedWorldControl : MonoBehaviour {
 	
 	void Update () {
 
-        if (GameManager.Instance.IsPlaying()) {
+        if (KasideGameManager.Instance.IsPlaying()) {
 
             switch (state) {
 

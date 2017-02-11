@@ -16,7 +16,7 @@ public class Platform : MonoBehaviour {
 	}
 
     void InitializeProps() {
-        LootManager.get.DoSpawn(transform.position.z, lootDrawer, PlatformManager.get.platformSize);
+        LootManager.get.DoSpawn(lootDrawer.transform.position.z, lootDrawer, PlatformManager.get.platformSize);
     }
 
     public void ReInitialize() {

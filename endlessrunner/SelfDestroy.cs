@@ -21,7 +21,7 @@ public class SelfDestroy : MonoBehaviour {
     }
 
     void OnCollisionExit(Collision collision) {
-        if (GameManager.Instance.Active() && collision.gameObject.tag == "Player") {
+        if (KasideGameManager.Instance.Active() && collision.gameObject.tag == "Player") {
             Invoke("DoSelfDestroy", timer);
         }
     }

@@ -34,38 +34,72 @@ public class PowerUpDrawer : MonoBehaviour {
         // enable the power up first
         powerUp.Start();
 
-        // add it to the list
+        // if power up is already active, reset its duration
         if (powerUps.Contains(powerUp)) {
+
             powerUps.Find(power => power == powerUp).ResetDuration();
-            Toast.get.Show("Boost timer reset!");
+            Toast.get.Show(powerUp.powerUpName);
+
         } else {
+
             // check for other powerups with similar effect
             for (int i=0; i < powerUps.Count; i++) {
                 if (powerUps[i].targetStat == powerUp.targetStat) {
-                    Toast.get.Show("Already using this boost!");
-                    return;
+
+                    // powerup with a stronger effect has been picked up
+                    if (powerUps[i].statMultiplier < powerUp.statMultiplier) {
+
+                        UnapplyPowerUp(powerUps[i]);
+                        ApplyPowerUp(powerUp);
+
+                        powerUps.RemoveAt(i);
+                        powerUps.Add(powerUp);
+                        Toast.get.Show(powerUp.powerUpName);
+                        return;
+
+                    
+                    } else if (powerUps[i].statMultiplier > powerUp.statMultiplier) {
+                        // a stronger power up is already active
+                        return;
+                    }
                 }
             }
-            // we can add it now
+
+            // add to the list
             powerUps.Add(powerUp);
-            playerStats.ApplyPowerUp(powerUp);
-            Visualize(powerUp);
+            // apply
+            ApplyPowerUp(powerUp);
+            // show text
             Toast.get.Show(powerUp.powerUpName);
+
         }
 
     }
 
     void RemovePowerUp(PowerUp powerUp) {
-
-        // remove from the list
         powerUps.Remove(powerUp);
-
-        // remove powerup effect
-        playerStats.UnapplyPowerUp(powerUp);
-
-        DeVisualize(powerUp);
-
+        UnapplyPowerUp(powerUp);
     }
+
+    private void ApplyPowerUp(PowerUp powerUp) {
+        // apply the effect to player
+        playerStats.ApplyPowerUp(powerUp);
+        // add icon to ui
+        Visualize(powerUp);
+    }
+
+    private void UnapplyPowerUp(PowerUp powerUp) {
+        // remove effect from player
+        playerStats.UnapplyPowerUp(powerUp);
+        // remove icon from ui
+        DeVisualize(powerUp);
+    }
+
+    /*
+     
+        UI stuff
+         
+    */
 
     void Visualize(PowerUp powerUp) {
         GameObject iconObject = (GameObject) Instantiate(powerUpIconPrefab, powerUpIconBox.transform);

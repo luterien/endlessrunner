@@ -27,14 +27,14 @@ public class StuffSpawnManager : MonoBehaviour {
 
     public float distanceBetweenEachStuff = 5f;
 
-    GameManager game;
+    KasideGameManager game;
 
     // Use this for initialization
     void Start () {
         objectCount = objects.Length;
         obstacleCount = obstacles.Length;
         spawnStuffBlock = true;
-        game = GameManager.Instance;
+        game = KasideGameManager.Instance;
     }
 	
 	// Update is called once per frame

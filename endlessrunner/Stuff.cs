@@ -19,7 +19,7 @@ public class Stuff : MonoBehaviour {
     void OnTriggerEnter(Collider collider) {
         if (collider.gameObject.tag == "Player") {
             collider.gameObject.SendMessage("AddPoints", pointsGiven);
-            GameManager.Instance.PlaySound();
+            KasideGameManager.Instance.PlaySound();
             if (gameObject) Destroy(gameObject);
         }
     }

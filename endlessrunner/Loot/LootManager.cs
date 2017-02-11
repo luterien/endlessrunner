@@ -27,7 +27,7 @@ public class LootManager : MonoBehaviour {
 
     public Vector3 spawnPosition;
 
-    List<float> lanes = new List<float>() { -2f, 0f, 2f };
+    List<float> lanes = new List<float>() { -4.2f, 0f, 4.2f };
     
     void Awake() {
 

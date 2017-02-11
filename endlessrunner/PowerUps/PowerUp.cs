@@ -9,6 +9,7 @@ public class PowerUp : ScriptableObject {
     public float duration;
     public Sprite icon;
     public GameObject prefab;
+    public ParticleSystem particle;
 
     public enum TargetStat {
         HorizontalSpeed,

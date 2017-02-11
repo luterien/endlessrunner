@@ -26,7 +26,7 @@ public class PlatformManager : MonoBehaviour {
     
     void Start () {
         // start with 2 platforms
-        for (int i=0; i < 3; i++) { 
+        for (int i=0; i < 2; i++) { 
             GameObject platformObject = (GameObject) Instantiate(
                 platforms[i], 
                 new Vector3(platforms[i].transform.position.x, platforms[i].transform.position.y, platformSize * i), 

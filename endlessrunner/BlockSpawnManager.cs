@@ -7,10 +7,10 @@ public class BlockSpawnManager : MonoBehaviour {
     public GameObject[] blocks;
     public Transform spawnPoint;
 
-    public GameManager game;
+    public KasideGameManager game;
     
 	void Start () {
-        game = GameManager.Instance;
+        game = KasideGameManager.Instance;
 	}
 	
 	void Update () {
